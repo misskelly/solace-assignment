@@ -17,6 +17,7 @@
   - No null checks
 - Need to break components out of page.tsx
 - Case insensitive search
+- empty next config
 
 ### Backend
 
