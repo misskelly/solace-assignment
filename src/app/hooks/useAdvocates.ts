@@ -31,7 +31,7 @@ const matchesSearchTerm = (advocate: Advocate, searchTerm: string): boolean => {
 export const useAdvocates = () => {
   const [advocates, setAdvocates] = useState<Advocate[]>([]);
   const [filteredAdvocates, setFilteredAdvocates] = useState<Advocate[]>([]);
-  const [loading, setLoading] = useState<boolean>(true); // Start as true
+  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>("");
 
