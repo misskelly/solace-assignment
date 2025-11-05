@@ -2,6 +2,7 @@
 
 import { useId } from "react";
 import { useAdvocates } from "../hooks/useAdvocates";
+import { AdvocateCard } from "./AdvocateCard";
 
 export const Advocates = () => {
   const {
@@ -78,38 +79,15 @@ export const Advocates = () => {
             )}
           </div>
         </section>
-        <table>
-          <thead>
-            <tr>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>City</th>
-              <th>Degree</th>
-              <th>Specialties</th>
-              <th>Years of Experience</th>
-              <th>Phone Number</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredAdvocates.map((advocate, index) => {
-              return (
-                <tr key={`${advocate.firstName}-${advocate.lastName}-${index}`}>
-                  <td>{advocate.firstName}</td>
-                  <td>{advocate.lastName}</td>
-                  <td>{advocate.city}</td>
-                  <td>{advocate.degree}</td>
-                  <td>
-                    {advocate.specialties.map((s: string) => (
-                      <div key={s}>{s}</div>
-                    ))}
-                  </td>
-                  <td>{advocate.yearsOfExperience}</td>
-                  <td>{advocate.phoneNumber}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          {filteredAdvocates.map((advocate, index) => (
+            <AdvocateCard
+              key={`${advocate.firstName}-${advocate.lastName}-${index}`}
+              advocate={advocate}
+              index={index}
+            />
+          ))}
+        </div>
       </main>
     </>
   );

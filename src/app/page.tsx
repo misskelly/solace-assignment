@@ -6,7 +6,7 @@ import Image from "next/image";
 
 const Home = () => {
   return (
-    <div className="m-12 max-w-6xl">
+    <div className="m-10 max-w-6xl">
       <div className="mx-auto px-4 sm:px-6">
         <nav
           className="flex items-center justify-between h-16"
