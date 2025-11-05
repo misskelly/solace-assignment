@@ -28,13 +28,19 @@ docker compose up -d
 
 2. Create a `solaceassignment` database.
 
-3. Push migration to the database
+3. Generate the SQL migration files
+
+```bash
+npm run generate
+```
+
+4. Push migration to the database
 
 ```bash
 npx drizzle-kit push
 ```
 
-4. Seed the database
+5. Seed the database
 
 ```bash
 curl -X POST http://localhost:3000/api/seed
