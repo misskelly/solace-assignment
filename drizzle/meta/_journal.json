@@ -8,6 +8,13 @@
       "when": 1762314022148,
       "tag": "0000_flashy_tattoo",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1762324132496,
+      "tag": "0001_lowly_bishop",
+      "breakpoints": true
     }
   ]
 }
