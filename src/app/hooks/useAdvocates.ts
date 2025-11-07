@@ -5,90 +5,51 @@ export type ApiResponse = {
   data: Advocate[];
 };
 
-const matchesSearchTerm = (advocate: Advocate, searchTerm: string): boolean => {
-  const term = searchTerm.toLowerCase();
-
-  const searchableFields = [
-    advocate.firstName,
-    advocate.lastName,
-    advocate.city,
-    advocate.degree,
-    advocate.yearsOfExperience.toString(),
-    ...(advocate.specialties || []),
-  ];
-
-  const matches = searchableFields.some((field) => {
-    if (typeof field !== "string") {
-      console.warn("Non-string field found:", field);
-      return false;
-    }
-    return field.toLowerCase().includes(term);
-  });
-
-  return matches;
-};
-
 export const useAdvocates = () => {
   const [advocates, setAdvocates] = useState<Advocate[]>([]);
-  const [filteredAdvocates, setFilteredAdvocates] = useState<Advocate[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const [hasMore, setHasMore] = useState(true);
 
   useEffect(() => {
-    const fetchAdvocates = async () => {
-      try {
-        const response = await fetch("/api/advocates");
-        if (!response.ok) {
-          throw new Error(`Failed to fetch advocates: ${response.statusText}`);
-        }
+    const timer = setTimeout(() => {
+      fetchAdvocates(searchTerm);
+    }, 300);
 
-        const json = (await response.json()) as ApiResponse;
+    return () => clearTimeout(timer);
+  }, [searchTerm]);
 
-        setAdvocates(json.data);
-        setFilteredAdvocates(json.data);
-      } catch (err) {
-        const message =
-          err instanceof Error ? err.message : "Failed to load advocates";
-        setError(message);
-        console.error("Error fetching advocates:", err);
-      } finally {
-        setLoading(false);
+  const fetchAdvocates = async (query: string) => {
+    setLoading(true);
+    try {
+      const params = new URLSearchParams({ q: query, offset: "0" });
+      const response = await fetch(`/api/advocates?${params}`);
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch: ${response.statusText}`);
       }
-    };
 
-    fetchAdvocates();
-  }, []);
-
-  const applyFilter = (term: string) => {
-    const trimmedTerm = term.trim();
-
-    if (!trimmedTerm) {
-      setFilteredAdvocates(advocates);
-      return;
+      const json = await response.json();
+      setAdvocates(json.data);
+      setHasMore(json.hasMore);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to load");
+    } finally {
+      setLoading(false);
     }
-
-    const filtered = advocates.filter((advocate) =>
-      matchesSearchTerm(advocate, trimmedTerm)
-    );
-
-    setFilteredAdvocates(filtered);
   };
 
   const onSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const term = e.target.value;
-    setSearchTerm(term);
-    applyFilter(term);
+    setSearchTerm(e.target.value);
   };
 
   const reset = () => {
     setSearchTerm("");
-    setFilteredAdvocates(advocates);
   };
 
   return {
     advocates,
-    filteredAdvocates,
     loading,
     error,
     searchTerm,

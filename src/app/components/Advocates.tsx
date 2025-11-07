@@ -5,14 +5,8 @@ import { useAdvocates } from "../hooks/useAdvocates";
 import { AdvocateCard } from "./AdvocateCard";
 
 export const Advocates = () => {
-  const {
-    filteredAdvocates,
-    loading,
-    error,
-    searchTerm,
-    onSearchChange,
-    reset,
-  } = useAdvocates();
+  const { advocates, loading, error, searchTerm, onSearchChange, reset } =
+    useAdvocates();
 
   const inputId = useId();
 
@@ -73,14 +67,14 @@ export const Advocates = () => {
               <span className="text-red-700">Error: {error}</span>
             ) : (
               <span>
-                {filteredAdvocates.length} result
-                {filteredAdvocates.length !== 1 ? "s" : ""}
+                {advocates.length} result
+                {advocates.length !== 1 ? "s" : ""}
               </span>
             )}
           </div>
         </section>
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {filteredAdvocates.map((advocate, index) => (
+          {advocates.map((advocate, index) => (
             <AdvocateCard
               key={`${advocate.firstName}-${advocate.lastName}-${index}`}
               advocate={advocate}
