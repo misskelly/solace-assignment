@@ -8,6 +8,31 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      colors: {
+        solace: {
+          teal: {
+            DEFAULT: "#2B6F6F",
+            dark: "#1F5555",
+            light: "#3A8585",
+          },
+          green: {
+            DEFAULT: "#1d4339",
+          },
+          gold: {
+            DEFAULT: "#D4A849",
+            light: "#E5C76B",
+            dark: "#B8913D",
+          },
+          cream: {
+            DEFAULT: "#F9F7F4",
+            light: "#FDFBF8",
+          },
+        },
+      },
+      fontFamily: {
+        serif: ["Playfair Display", "Georgia", "serif"],
+        sans: ["Inter", "system-ui", "sans-serif"],
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
