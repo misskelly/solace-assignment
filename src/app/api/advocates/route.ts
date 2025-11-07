@@ -1,5 +1,5 @@
 import db from "@/db";
-import { or, sql } from "drizzle-orm";
+import { or, ilike, sql } from "drizzle-orm";
 import { advocates } from "@/db/schema";
 
 export async function GET(request: Request) {
@@ -7,7 +7,7 @@ export async function GET(request: Request) {
   const query = searchParams.get("q")?.trim() || "";
   const limit = 20;
   const offset = parseInt(searchParams.get("offset") || "0");
-  const searchTerm = `%${query.toLowerCase()}%`;
+  const searchPattern = `%${query}%`;
 
   let data;
 
@@ -17,11 +17,12 @@ export async function GET(request: Request) {
       .from(advocates)
       .where(
         or(
-          sql`LOWER(${advocates.firstName}) LIKE ${searchTerm}`,
-          sql`LOWER(${advocates.lastName}) LIKE ${searchTerm}`,
-          sql`LOWER(${advocates.city}) LIKE ${searchTerm}`,
-          sql`LOWER(${advocates.degree}) LIKE ${searchTerm}`,
-          sql`${advocates.yearsOfExperience}::text LIKE ${searchTerm}`
+          ilike(advocates.firstName, searchPattern),
+          ilike(advocates.lastName, searchPattern),
+          ilike(advocates.city, searchPattern),
+          ilike(advocates.degree, searchPattern),
+          // Convert specialties JSONB array to text for ilike comparison
+          sql`${advocates.specialties}::text ilike ${searchPattern}`
         )
       )
       .limit(limit)

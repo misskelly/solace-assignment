@@ -10,7 +10,6 @@ export const useAdvocates = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const [hasMore, setHasMore] = useState(true);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -32,7 +31,6 @@ export const useAdvocates = () => {
 
       const json = await response.json();
       setAdvocates(json.data);
-      setHasMore(json.hasMore);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to load");
     } finally {
